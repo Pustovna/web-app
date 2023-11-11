@@ -14,11 +14,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.get('/main', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
 app.use(bodyParser.json());
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 
 app.post('/main', (req, res) => {
     const { name, surname, patronymic, date, group } = req.body;
@@ -57,3 +64,43 @@ app.delete('/main-students-delete', (req, res) => {
 // 2. Создай веб-приложение (клиентскую и серверную части), с помощью которого можно добавить студента, удалить студента по уникальному номеру, вывести список студентов.
 // ☝ При работе с БД используй ручное написание запросов, а не ORM. Примени технологию REST API.
 // ☝ При выполнении задания можно использовать фреймворки. В этом случае на собеседовании мы попросим тебя объяснить, как работает фреймворк в части выполнения поставленной задачи.
+
+//Задание 3 
+
+app.get('/doczilla/todos', (req, res) => {
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    fetch(`https://todo.doczilla.pro/api/todos?limit=${limit}&offset=${offset}`)
+    .then(resDoczilla => resDoczilla.json())
+    .then(data => {
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => console.log(err));
+});
+
+app.get('/doczilla/date', (req, res) => {  
+    const from = req.query.from;
+    const to = req.query.to;
+    fetch(`https://todo.doczilla.pro/api/todos/date?from=${from}&to=${to}`)
+    .then(resDoczilla => resDoczilla.json())
+    .then(data => {
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => console.log(err));
+});
+
+
+
+
+app.get('/doczilla/find', (req, res) => {  
+    const word = req.query.word;
+    fetch(`https://todo.doczilla.pro/api/todos/find?q=${word}`)
+    .then(resDoczilla => resDoczilla.json())
+    .then(data => {
+        console.log(data);
+        res.send(data);
+    })
+    .catch(err => console.log(err));
+});
