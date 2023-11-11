@@ -18,10 +18,12 @@ $(document).ready(function() {
               data.forEach(function(student) {
                 const li = $('<li></li>');
                 li.html(`
-                  <span>${student.id}</span>
-                  <span>${student.имя}</span>
-                  <span>${student.фамилия}</span>
-                  <span>${student.отчество}</span>
+                  <span>${student.id}</b></span>
+                  <span><b>${student.имя}</b></span>
+                  <span><b>${student.фамилия}</b></span>
+                  <span><b>${student.отчество}</b></span>  
+                  <span>${student.дата}</span>
+                  <span class="size-small">группа ${student.группа}</span>
                   <button class="delete-btn">x</button>
                 `);
                 studentList.append(li);
@@ -37,7 +39,6 @@ $(document).ready(function() {
     }
    
     getStudents();
-    console.log(studentList);
 
     // add student
     form.on('submit', function(event) {
